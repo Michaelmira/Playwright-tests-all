@@ -275,23 +275,42 @@ test.describe("Home Page", () => {
         await context.close();
     });
 
+    test("Disappearing Elements", async ({ page }) => {
+        await page.goto("https://the-internet.herokuapp.com/disappearing_elements")
+
+        await expect.toHaveURL("https://the-internet.herokuapp.com/disappearing_elements")
+
+        await page.waitForTimeout(2000)
 
 
 
+        // First, make sure the paragraph element is visible
+        const pElement = page.locator('p');
+        await expect(pElement).toBeVisible();
+
+        // Then get its text content
+        const pageDescription = await pElement.textContent();
 
 
+        expect(pageDescription).toContain("This example demonstrates when elements on a page change by disappearing/reappearing on each page load.")
+
+        console.log('✅ Dissappearing Elements Tests successful');
 
 
-
-
-
-
-
-
-
-    test("Drag and Drop", async ({page}) => {
 
     })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
