@@ -413,6 +413,35 @@ test.describe("Home Page", () => {
 
     })
 
+        
+    test("Dropdown2", async ({ page }) => {
+
+        //--------------------------------
+        // Arrange:
+        //--------------------------------
+
+
+        //--------------------------------
+        // Act:
+        //--------------------------------
+
+        // Select dropdown option 2. mjm
+        await page.locator('select#dropdown').selectOption('2');
+
+        // Evaluate dropdown current value. mjm
+        const selectedValue2 = await page.locator('select#dropdown').evaluate(el => el.value);
+
+        //--------------------------------
+        // Assert:
+        //--------------------------------
+
+        // Test: Assert test correct dropdown value and check not to be. mjm
+        expect(selectedValue2).not.toBe('1');
+        expect(selectedValue2).toBe('2')
+
+    })
+
+
 
 
 
