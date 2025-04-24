@@ -300,6 +300,70 @@ test.describe("Home Page", () => {
 
     })
 
+    test("Disappearing Elements Two", async ({ page }) => {
+
+        await page.goto("https://the-internet.herokuapp.com/disappearing_elements");
+        await expect(page).toHaveURL("https://the-internet.herokuapp.com/disappearing_elements");
+
+        // Verify page title and description
+        const pageTitle = await page.locator('h3').textContent();
+        expect(pageTitle).toBe("Disappearing Elements");
+
+        await page.waitForTimeout(2000)
+
+        const pElement = page.locator('p');
+        await expect(pElement).toBeVisible();
+        const pageDescription = await pElement.textContent();
+        expect(pageDescription).toContain("This example demonstrates when elements on a page change by disappearing/reappearing on each page load.")
+
+        // Verify the present menu items
+        await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'About' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Contact Us' })).toBeVisible();
+        await expect(page.getByRole('link', { name: 'Portfolio' })).toBeVisible();
+
+        // Get all menue items
+        const menuItems = page.locator('ul li');
+        const count = await menuItems.count();
+        console.log(`Found ${count} menu items on this page load`);
+
+        // Check for Gallery which may or may not be present.
+        const galleryLink = page.getByRole('link', { name: 'Gallery' });
+        const galleryExists = await galleryLink.isVisible().catch(() => false)
+
+        if (galleryExists) {
+            console.log("Gallery menu item is present");
+            await expect(galleryLink).toBeVisible();
+        } else {
+            console.log("Gallery menu item is not present")
+        }
+
+        await page.screenshot({ fullPage: true })
+
+        console.log('✅ Screenshot taken successfully');
+
+        const attempts = 5;
+        let withGallery = 0;
+        let withoutGallery = 0;
+
+        for (let i = 0; i < attempts; i++) {
+            await page.reload();
+            const hasGallery = await galleryLink.isVisible().catch(() => false);
+
+            if (hasGallery) {
+                withGallery++;
+            } else {
+                withoutGallery++;
+            }
+
+            console.log(`Refresh ${i + 1}: Gallery ${hasGallery ? 'present' : 'absent'}`);
+        }
+        console.log(`Results after ${attempts} refreshes: Gallery present ${withGallery} times, absent ${withoutGallery} times`);
+        console.log('✅ Disappearing Elements test completed successfully');
+
+    })
+
+
 
 
 
