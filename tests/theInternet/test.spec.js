@@ -371,7 +371,47 @@ test.describe("Home Page", () => {
         expect(titleLocator).toBe("Drag and Drop")
     })
 
+    test("Dropdown1", async ({ page }) => {
 
+        //--------------------------------
+        // Arrange:
+        //--------------------------------
+
+        // Launch browser and open page. mjm
+        const { context } = await launch();
+        const page = await context.newPage();
+
+        // Go to theInternet. mjm
+        await page.goto("https://the-internet.herokuapp.com/");
+
+        // Click navigate to dropdown. mjm
+        await page.locator(`a[href="/dropdown"]`).click();
+
+        //--------------------------------
+        // Act:
+        //--------------------------------
+
+        // Select dropdown option 1. mjm
+        await page.locator('select#dropdown').selectOption('1');
+
+        // Evaluate dropdown current value. mjm
+        const selectedValue1 = await page.locator('select#dropdown').evaluate(el => el.value);
+
+        //--------------------------------
+        // Assert:
+        //--------------------------------
+
+        // Test: Assert test correct dropdown value and check not to be. mjm
+        expect(selectedValue1).toBe('1');
+        expect(selectedValue1).not.toBe('2')
+
+
+
+
+
+
+
+    })
 
 
 
