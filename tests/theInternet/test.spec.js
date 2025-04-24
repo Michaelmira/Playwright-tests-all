@@ -363,6 +363,14 @@ test.describe("Home Page", () => {
 
     })
 
+    test("Drag And Drop", async ({ page }) => {
+        await page.goto("https://the-internet.herokuapp.com/drag_and_drop")
+        await expect(page).toHaveURL("https://the-internet.herokuapp.com/drag_and_drop")
+
+        const titleLocator = await page.locator('h3').textContent();
+        expect(titleLocator).toBe("Drag and Drop")
+    })
+
 
 
 
